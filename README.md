@@ -2,7 +2,7 @@
 
 A weekly triage across a portfolio of practices. It answers four questions: which agent failure should be fixed next, who owns it, what fixing it is worth, and whether past fixes worked.
 
-This is a one-page static tool (HTML, CSS, vanilla JS), made as proof of work for the Agent Operations role at Valerie Health. It runs on demo data for six fictional practices over six weeks. None of the data is real, and none of it describes Valerie Health's customers, agents or performance.
+This is a one-page static tool (HTML, CSS, vanilla JS), made as proof of work for the Agent Operations role at Valerie Health. It runs on demo data for six anonymised, fictional customers (Customer A–F) over six weeks. None of the data is real, and none of it describes Valerie Health's customers, agents or performance.
 
 Live: https://jakem-r.github.io/valerie-agent-triage/
 

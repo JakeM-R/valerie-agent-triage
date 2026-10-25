@@ -48,7 +48,6 @@
   const pct1 = (x) => `${(x * 100).toFixed(1)}%`;
   const short = (c) => (PLAYBOOK[c] && PLAYBOOK[c].short) || c;
   const days = (d) => (d === 0.5 ? "half a day" : d === 1 ? "1 day" : `${d} days`);
-  const firstWord = (p) => String(p).split(/\s+/)[0];
 
   function fmtDate(iso, opts) {
     const d = new Date(iso + "T00:00:00Z");
@@ -96,7 +95,7 @@
       .map((w) => `<option value="${w}">Week ${w} · ${esc(weekRange(w))}${w === latestWeek() ? " (latest)" : ""}</option>`).join("");
     $("f-week").value = String(state.filters.week);
     const opts = (vals, allLabel) => `<option value="all">${allLabel}</option>` + vals.map((v) => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
-    $("f-practice").innerHTML = opts(state.practices, `All ${state.practices.length} practices`);
+    $("f-practice").innerHTML = opts(state.practices, `All ${state.practices.length} customers`);
     $("f-workflow").innerHTML = opts(uniq(state.data.map((r) => r.workflow)).sort(), "All");
     $("f-channel").innerHTML = opts(uniq(state.data.map((r) => r.channel)).sort(), "All");
 
@@ -218,7 +217,7 @@
   function renderSource() {
     $("source").innerHTML = state.sourceName
       ? `<b>Your export</b>${esc(state.sourceName)} · ${state.data.length} tasks · read in your browser only`
-      : `<b>Demo data</b>${state.practices.length} fictional practices · ${state.data.length} tasks · ${state.weeks.length} weeks`;
+      : `<b>Demo data</b>${state.practices.length} demo customers · ${state.data.length} tasks · ${state.weeks.length} weeks`;
     $("reset").hidden = !state.sourceName;
   }
 
@@ -440,10 +439,9 @@
     const grid = practices.map((p) => state.weeks.map((w) => sum(rows.filter((r) => r.practice === p && r.week === w), (r) => r.staff_minutes)));
     const max = Math.max(1, ...grid.flat());
     const cols = `grid-template-columns: minmax(0, 1.7fr) repeat(${state.weeks.length}, minmax(0, 1fr));`;
-    const narrow = window.innerWidth < 640;
     let h = `<div class="row" style="${cols}"><span></span>${state.weeks.map((w) => `<span class="hd${w === m.week ? " sel" : ""}">W${w}</span>`).join("")}</div>`;
     practices.forEach((p, i) => {
-      h += `<div class="row" style="${cols}"><span class="nm" title="${esc(p)}">${esc(narrow ? firstWord(p) : p)}</span>` +
+      h += `<div class="row" style="${cols}"><span class="nm" title="${esc(p)}">${esc(p)}</span>` +
         grid[i].map((v, j) => {
           const a = v ? 0.08 + 0.8 * (v / max) : 0;
           const ink = a > 0.5 ? "var(--bg)" : "var(--text-primary)";
@@ -625,11 +623,6 @@
   $("reset").addEventListener("click", () => {
     loadData(window.DEMO_DATA, window.DEMO_FIXES, null);
     $("upload-msg").textContent = "Back on demo data.";
-  });
-
-  let narrow = window.innerWidth < 640;
-  window.addEventListener("resize", () => {
-    if ((window.innerWidth < 640) !== narrow) { narrow = !narrow; renderHeat(compute()); }
   });
 
   loadData(window.DEMO_DATA, window.DEMO_FIXES, null);

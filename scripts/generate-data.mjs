@@ -1,6 +1,6 @@
 // Generates the demo portfolio once, with a fixed seed, and writes data.js.
 // Run: node scripts/generate-data.mjs
-// Six fictional practices, six weeks. Not real patient data, not Valerie Health's real performance.
+// Six anonymised demo customers, six weeks. Not real patient data, not Valerie Health's real performance.
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
@@ -28,12 +28,12 @@ const weighted = (pairs) => {
 
 const WEEK_STARTS = ["2026-09-14", "2026-09-21", "2026-09-28", "2026-10-05", "2026-10-12", "2026-10-19"]; // Mondays
 
-const HARBOR = "Harbor Orthopedics";
-const CEDAR = "Cedar Valley Family Medicine";
-const NORTHGATE = "Northgate Pediatrics";
-const LAKESIDE = "Lakeside Cardiology";
-const SUMMIT = "Summit Dermatology";
-const RIVERBEND = "Riverbend Women's Health";
+const HARBOR = "Customer A";
+const CEDAR = "Customer B";
+const NORTHGATE = "Customer C";
+const LAKESIDE = "Customer D";
+const SUMMIT = "Customer E";
+const RIVERBEND = "Customer F";
 const PRACTICES = [[HARBOR, 55], [CEDAR, 60], [NORTHGATE, 45], [LAKESIDE, 40], [SUMMIT, 35], [RIVERBEND, 45]]; // tasks per week
 
 const PAYERS = ["Coastline Health Plan", "Meridian Mutual", "Northshore Care", "Pacific Union Benefits", "Tidewater HMO"];
@@ -107,13 +107,13 @@ const CAUSES = [
   },
   {
     name: "Provider/location not mapped in PMS",
-    // Summit opens a new location in week 5.
+    // Customer E opens a new location in week 5.
     rate: (p, w) => (p === SUMMIT && w >= 5 ? 0.15 : 0.004),
     staffShare: 0.4, staffMin: [12, 18], reviewMin: [6, 9],
     workflows: [["Schedule", 6], ["Referral", 3], ["Welcome Call", 1]],
     channels: [["Partner EMR portal", 5], ["Online form", 3], ["Email", 2]],
     notes: [
-      (p) => p === SUMMIT ? `Requested location "Summit Derm Eastside" has no PMS location ID.` : `Provider has no PMS provider ID at the requested location.`,
+      (p) => p === SUMMIT ? `Requested location (new Eastside clinic) has no PMS location ID.` : `Provider has no PMS provider ID at the requested location.`,
       (p) => p === SUMMIT ? `Eastside providers have no schedule templates in the PMS.` : `Provider schedule template missing for Thursday clinic.`,
     ],
   },
