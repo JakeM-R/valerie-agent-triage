@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Failure Triage</title>
+  <meta name="description" content="Which agent failure is costing a practice the most staff time this week, and what would fixing it be worth? Demo data for a fictional practice.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar wrap">
+    <div class="brand">Agent failure triage</div>
+    <div class="source" id="source"></div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow" id="eyebrow"></p>
+      <h1 id="headline"><span class="l1"></span><span class="l2"></span></h1>
+      <p class="hero-sub" id="hero-sub"></p>
+    </section>
+
+    <section class="filters" aria-label="Filters">
+      <label>Week <select id="f-week"></select></label>
+      <label>Workflow <select id="f-workflow"></select></label>
+      <label>Channel <select id="f-channel"></select></label>
+    </section>
+
+    <section class="tiles" id="tiles" aria-label="This week"></section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Failure causes, ranked by staff time</h2>
+        <p class="muted">Staff hours = tasks × minutes a person spent resolving them. Tap a cause to see its tasks.</p>
+      </div>
+      <p class="callout" id="count-vs-hours"></p>
+      <ol class="causes" id="causes"></ol>
+      <p class="method" id="flag-rule"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Fix simulator</h2>
+        <p class="muted">Mark a cause fixed and set how many of its failures the fix would catch. <strong>Catch rate is an assumption you set, not a measured result.</strong></p>
+      </div>
+      <div class="sim-result" id="sim-result"></div>
+      <ul class="sim-list" id="sim-list"></ul>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Four weeks at a glance</h2>
+        <p class="muted">Task outcomes per week. Dashed outline shows what the fixes above would move to automated.</p>
+      </div>
+      <div class="legend">
+        <span><i class="dot automated"></i>Automated</span>
+        <span><i class="dot review"></i>Needed review</span>
+        <span><i class="dot staff"></i>Handed to staff</span>
+      </div>
+      <div id="chart"></div>
+    </section>
+
+    <section class="panel upload">
+      <div class="panel-head">
+        <h2>Use your own export</h2>
+        <p class="muted">Load a CSV with the columns below. It is read in your browser and replaces the demo data on this page. Nothing is uploaded or stored.</p>
+      </div>
+      <code class="cols">id, week, date, workflow, channel, outcome, cause, staff_minutes, agent_note</code>
+      <ul class="col-notes">
+        <li><b>outcome</b>: <code>automated</code>, <code>review</code> or <code>staff</code></li>
+        <li><b>cause</b>: empty when automated; any text otherwise</li>
+        <li><b>week</b>: whole number (1, 2, 3…); the latest week is treated as “this week”</li>
+        <li><b>staff_minutes</b>: number, 0 when automated</li>
+      </ul>
+      <div class="btns">
+        <label class="pill primary">Choose CSV<input type="file" id="csv" accept=".csv,text/csv" hidden></label>
+        <button class="pill secondary" id="dl-demo" type="button">Download demo CSV</button>
+        <button class="pill ghost" id="reset" type="button" hidden>Back to demo data</button>
+      </div>
+      <p class="upload-msg" id="upload-msg" role="status"></p>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <p class="demo-note"><b>Demo data.</b> Harbor Orthopedics is a fictional two-location practice. Every task, minute and agent note on this page is generated from a fixed seed. Nothing here describes Valerie Health’s real customers or performance.</p>
+    <blockquote>“Improve agent performance. Use data and operational feedback to diagnose issues, prioritize improvements, and deliver measurable results.”<cite>Agent Operations, Valerie Health</cite></blockquote>
+    <p class="muted small">Built by Jake as part of an application. Static page, no tracking. <a href="https://github.com/jakem-r/valerie-agent-triage">Source</a></p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
